@@ -1,7 +1,6 @@
 import axios from 'axios';
-import React, { ReactChild, ReactFragment, ReactPortal, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IPokemons } from '../Interfaces/Pokemons';
-import Loader from './Utilities/Loader';
 
 const colors:any = {
     fire: '#FDDFDF',
@@ -105,35 +104,35 @@ const PokemonList: React.FC<IPokemons> = (data) => {
     //     }
     // };
 
-    const getPokemonSpecies = async (id: number) => {
-        try {
-            // 👇️ const data: GetPokemonListsResponse
-            const { data, status } = await axios(
-                `https://pokeapi.co/api/v2/pokemon-species/${id}`,
-                {
-                    headers: {
-                        "Access-Control-Allow-Origin": "*",
-                        // "Access-Control-Allow-Headers": "Authorization", 
-                        // "Access-Control-Allow-Methods": "GET, POST, OPTIONS, PUT, PATCH, DELETE" ,
-                        "Content-Type": "application/json;charset=UTF-8"
-                    },
+    const getPokemonSpecies = (id: number) => {
+
+        axios(
+            `https://pokeapi.co/api/v2/pokemon-species/${id}`,
+            {
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    // "Access-Control-Allow-Headers": "Authorization", 
+                    // "Access-Control-Allow-Methods": "GET, POST, OPTIONS, PUT, PATCH, DELETE" ,
+                    "Content-Type": "application/json;charset=UTF-8"
                 },
-            );
-            
-            setPokemonSpecies(data)
-            // getPokemonEvolutions(data.evolution_chain.url)
-
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                console.log('error message: ', error.message);
-            } else {
-                console.log('unexpected error: ', error);
+            },
+        ).then(function (response) {
+            const { data, status } = response
+            if(status === 200){
+                setPokemonSpecies(data)
             }
+           
+        }).catch(function (error) {
+            // handle error
+            console.log('error message: ', error.message);
+        }).finally(function () {
+            // always executed
+            // console.log('nada')
+        });
 
-        }
     };
 
-    const getPokemon = async (id: any) => {
+    const getPokemon =  (id: number | string) => {
 
         // 👇️ const data: GetPokemonListsResponse
         axios(
@@ -147,8 +146,10 @@ const PokemonList: React.FC<IPokemons> = (data) => {
                 },
             },
         ).then(function (response) {
-            const { data, status } = response 
-            setPokemon(data)
+            const { data, status } = response
+            if(status === 200){
+                setPokemon(data)
+            } 
            
         }).catch(function (error) {
             // handle error
@@ -162,7 +163,7 @@ const PokemonList: React.FC<IPokemons> = (data) => {
 
     function getId(seuRetorno: string) {
         const myArray = seuRetorno.split("/");
-        const id = (myArray[6]) ? parseInt(myArray[6]) : 1
+        const id:number = (myArray[6]) ? parseInt(myArray[6]) : 1
         return id
     }
 
@@ -210,9 +211,8 @@ const PokemonList: React.FC<IPokemons> = (data) => {
     useEffect(() => {
         getPokemon(data.name)
         getPokemonSpecies(getId(data.url))
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-
-  
     
     return (
 
