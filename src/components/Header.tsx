@@ -17,8 +17,8 @@ export function Header(props: IHeaderProps) {
             <HeaderWrapper>
                 <div>
                     <nav className="nav nav1">
-                        <Link to="#" onClick={() => navigate("/")} className={`nav-item ${(location.pathname) === '/' && 'active'}`} data-color="#663399">Home</Link>
-                        <Link to="#" onClick={() => navigate("/sobre")} className={`nav-item ${(location.pathname) === '/sobre' && 'active'}`} data-color="#446A46">Sobre</Link>
+                        <Link to="/" className={`nav-item ${(location.pathname) === '/' && 'active'}`} data-color="#663399">Home</Link>
+                        <Link to="/sobre" className={`nav-item ${(location.pathname) === '/sobre' && 'active'}`} data-color="#446A46">Sobre</Link>
                         <span className="nav-indicator"></span>
                     </nav>
                 </div>
