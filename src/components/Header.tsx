@@ -1,12 +1,7 @@
-import { useNavigate } from "react-router-dom";
 import { HeaderWrapper } from "../styles/globals"
 import { useLocation, Link } from 'react-router-dom';
 
-export interface IHeaderProps {
-}
-
-export function Header(props: IHeaderProps) {
-    const navigate = useNavigate();
+export function Header() {
     const location = useLocation();
 
     return (
